@@ -1,5 +1,6 @@
 from file_handling import (
     read_file,
+    write_file,
     tags_to_binary,
     write_binary_file,
     binary_to_tags,
@@ -22,7 +23,10 @@ while True:
     # Compression
     if choice == "1":
 
-        text = read_file("file1.txt")
+        text = input("\nEnter the text to compress: ")
+
+        # Save user's input in file1.txt
+        write_file("file1.txt", text)
 
         tags = compress(text)
 
@@ -41,7 +45,11 @@ while True:
         tags = binary_to_tags(binary_data)
 
         decompressed_text = decompress(tags)
-        write_decompressed_file("decompressed.txt", decompressed_text)
+
+        write_decompressed_file(
+            "decompressed.txt",
+            decompressed_text
+        )
 
         print("\nDecompression completed.")
         print("Decompressed text:")
@@ -56,4 +64,3 @@ while True:
     else:
 
         print("\nInvalid choice. Please choose 1, 2, or 3.")
-
