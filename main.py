@@ -1,14 +1,18 @@
 from file_handling import (
     select_file,
     read_file,
+    calc_bit_width,
     tags_to_binary,
+    convert_bitStream_bytes,
     write_binary_file,
+    read_binary_file,
+    bytes_to_bitStream,
     binary_to_tags,
     write_decompressed_file
 )
 
-from compression import compress
-from decompression import decompress
+from lz77_compression import compress
+from lz77_decompression import decompress
 
 
 while True:
@@ -29,13 +33,13 @@ while True:
             text = read_file(filename)
 
             tags = compress(text)
+            pos_bits, len_bits = calc_bit_width(tags)
+            binary_data = tags_to_binary(tags,pos_bits, len_bits)
+            final_bytes = convert_bitStream_bytes(binary_data)
 
-            binary_data = tags_to_binary(tags)
-
-            write_binary_file("Output/compressed.txt", binary_data)
-
+            write_binary_file("Output/compressed.bin",final_bytes, pos_bits, len_bits, len(tags))
             print("\nCompression completed.")
-            print("Compressed data saved in compressed.txt")
+            print("Compressed data saved in compressed.bin")
 
         else:
             print("\nNo file selected.")
@@ -46,9 +50,15 @@ while True:
         filename = select_file()
 
         if filename:
-            binary_data = read_file(filename)
 
-            tags = binary_to_tags(binary_data)
+            # reading metadata and compressed bytes
+            pos_bits, len_bits, tag_count, compressed_bytes = ( read_binary_file(filename) )
+
+            # converting bytes into bitstream
+            binary_data = bytes_to_bitStream(compressed_bytes)
+
+            # decoding bitstream into tags
+            tags = binary_to_tags(binary_data, pos_bits, len_bits, tag_count)
 
             decompressed_text = decompress(tags)
 
