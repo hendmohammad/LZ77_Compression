@@ -6,10 +6,10 @@ def extracting_info_from_tag(tag):
     # take each character till the comma ","
     position, length, next_symbol = cleaned_tag.split(',', 2)
 
-    # remove white spaces 
-    position = int(position.strip())
-    length = int(length.strip())
-    next_symbol = next_symbol.strip()
+    # change the data type of position and length from 'str'  to 'int'
+    position = int(position)
+    length = int(length)
+
 
     # if empty string >> the next symbol is white space
 
@@ -25,7 +25,7 @@ def decompress(tags):
     for tag in tags:
         position, length , next_symbol = extracting_info_from_tag(tag)
 
-        if length == 0:
+        if position == 0 & length == 0:
             decompressed_string += next_symbol
         else:
             i = len(decompressed_string) - position
