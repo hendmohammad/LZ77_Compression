@@ -1,11 +1,11 @@
+from tkinter import filedialog
+
+def select_file():
+    return filedialog.askopenfilename()
+
 def read_file(filename):
     with open(filename, "r") as file:
         return file.read()
-
-
-def write_file(filename, text):
-    with open(filename, "w") as file:
-        file.write(text)
 
 
 def number_to_binary(number, bits):

@@ -1,18 +1,20 @@
 def extracting_info_from_tag(tag):
-    cleaned_tag = ''
-    # removing white space and some of the special characters from tag
-    # I didn't remove the comma ',' because it separates  the items of the tag
-    for char in tag:
-        if char == ' ' or char == '"' or char == '<' or char == '>':
-            continue
-        else:
-            cleaned_tag += char
 
-    # cleaned_tag will be something like 0,0,A
-    position , length , next_symbol = cleaned_tag.split(',') # position's and length's data type is 'str' !!
+    # removing "<" , ">" , white spaces on both sides
+    cleaned_tag = tag.replace('<', '').replace('>', '').replace('"', '').strip()
 
-    position = int(position)
-    length = int(length)
+    # take each character till the comma ","
+    position, length, next_symbol = cleaned_tag.split(',', 2)
+
+    # remove white spaces 
+    position = int(position.strip())
+    length = int(length.strip())
+    next_symbol = next_symbol.strip()
+
+    # if empty string >> the next symbol is white space
+
+    if next_symbol == '':
+        next_symbol = ' '
 
     return position, length, next_symbol
 

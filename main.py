@@ -1,6 +1,6 @@
 from file_handling import (
+    select_file,
     read_file,
-    write_file,
     tags_to_binary,
     write_binary_file,
     binary_to_tags,
@@ -13,7 +13,7 @@ from decompression import decompress
 
 while True:
 
-    print("\n===== LZ77 Compression =====")
+    print("\n\nLZ77 Text File Compressor: \n ")
     print("1. Compress")
     print("2. Decompress")
     print("3. Exit")
@@ -23,37 +23,45 @@ while True:
     # Compression
     if choice == "1":
 
-        text = input("\nEnter the text to compress: ")
+        filename = select_file()
 
-        # Save user's input in file1.txt
-        write_file("file1.txt", text)
+        if filename:
+            text = read_file(filename)
 
-        tags = compress(text)
+            tags = compress(text)
 
-        binary_data = tags_to_binary(tags)
+            binary_data = tags_to_binary(tags)
 
-        write_binary_file("file2.txt", binary_data)
+            write_binary_file("Output/compressed.txt", binary_data)
 
-        print("\nCompression completed.")
-        print("Compressed data saved in file2.txt")
+            print("\nCompression completed.")
+            print("Compressed data saved in compressed.txt")
+
+        else:
+            print("\nNo file selected.")
 
     # Decompression
     elif choice == "2":
 
-        binary_data = read_file("file2.txt")
+        filename = select_file()
 
-        tags = binary_to_tags(binary_data)
+        if filename:
+            binary_data = read_file(filename)
 
-        decompressed_text = decompress(tags)
+            tags = binary_to_tags(binary_data)
 
-        write_decompressed_file(
-            "decompressed.txt",
-            decompressed_text
-        )
+            decompressed_text = decompress(tags)
 
-        print("\nDecompression completed.")
-        print("Decompressed text:")
-        print(decompressed_text)
+            write_decompressed_file(
+                "Output/decompressed.txt",
+                decompressed_text
+            )
+
+            print("\nDecompression completed.")
+            print("Decompressed data saved in decompressed.txt")
+        
+        else:
+            print("\nNo file selected.")
 
     # Exit
     elif choice == "3":
