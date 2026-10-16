@@ -102,6 +102,19 @@ def read_binary_file(filename):
 
     return pos_bits, len_bits, tag_count, compressed_bytes
 
+# Read the header and compressed data from the uploaded .bin file
+def read_binary_file_from_upload(uploaded_file):
+    file_data = uploaded_file.getvalue()
+
+    if len(file_data) < 6:
+        raise ValueError("Invalid compressed file header.")
+
+    pos_bits = file_data[0]
+    len_bits = file_data[1]
+    tag_count = int.from_bytes(file_data[2:6], "big")
+    compressed_bytes = file_data[6:]
+
+    return pos_bits, len_bits, tag_count, compressed_bytes
 
 def bytes_to_bitStream(compressed_bytes):
     binary_data = ""
