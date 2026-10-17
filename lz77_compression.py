@@ -44,13 +44,14 @@ def compress(uncompressed):
       index = matched["i"]
       length = matched["len"]
 
+      # checking if the current match ends exactly at the end of teh search window
       if index + length == len(search_window) and length > 0:
-        distance = len(search_window) - index
-        offset = length
+        distance = len(search_window) - index # used to know how often the pattern repeats
+        offset = length # used to find the next character to compare
 
         while i + offset < len(text):
-          pattern_index = offset % distance 
-          source_index = index + pattern_index
+          pattern_index = offset % distance  # to make the pattern repeat from the beginning whenever it reach its end (using 0 to point to initial char, 1 to look for the next match in the sequence)
+          source_index = index + pattern_index  # the new compared char from the lookahead window
           if text[i + offset] == search_window[source_index]:
             length += 1
             offset += 1
